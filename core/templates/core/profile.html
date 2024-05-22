@@ -1,0 +1,59 @@
+{% extends "core/sideBar.html" %}{% load static %}{% block content %}
+<body>
+  <div class="container">
+    <div class="personal-info">
+      <div class="left">
+        <img src="{{user_profile.image}}" alt="" />
+      </div>
+      <div class="right">
+        <h2>{{user_profile.user.first_name}} {{user_profile.user.last_name}}</h2>
+        {% if user_profile.user != user.user %}
+          {% if is_following %}
+          <a class="link" href="/follow?user_id={{user_profile.user.id}}">Unfollow</a>
+          {% else %}
+          <a class="link" href="/follow?user_id={{user_profile.user.id}}">Follow</a>
+          {% endif %}
+        {% else %}
+        <a class="link" href="{% url "edit" %}">Edit Profile</a>
+        {% endif %}
+        <div class="clear-fix"></div>
+        <ul>
+          {% if user_profile.no_of_followed <= 1 %}
+          
+          <li>{{user_profile.no_of_followed}} follower</li>
+          {% else %}
+          <li>{{user_profile.no_of_followed}} followers</li>
+          
+          {% endif %}
+          
+          {% if user_profile.no_of_following <= 1 %}
+          <li>{{user_profile.no_of_following}} following</li>
+          {% else %}
+          <li>{{user_profile.no_of_following}} followings</li>
+          {% endif %}
+        </ul>
+        <div class="clear-fix"></div>
+        <span>{{user_profile.bio|linebreaksbr|safe}}</span>
+        <a class="link2" href="#">{{user_profile.website}}</a>
+      </div>
+      <div class="clear-fix"></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="images">
+      {% for post in posts reversed %}
+      <a href="/comment/{{post.post_id}}" class="post-link">
+        <div class="image">
+          <img src="{{post.image}}" alt="" />
+          <div class="overlay">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="fa-heart"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>
+            <span class="like-count">{{post.no_of_like}}</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="clear-fix"></div>
+  </div>
+</body>
+{% endblock %}
